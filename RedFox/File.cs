@@ -20,20 +20,14 @@ namespace RedFox {
 				Filter = "Текстовые файлы (*.txt) |*.txt| Все файлы (*.*)|*.*"
 			};
 			if(openFile.ShowDialog() == DialogResult.OK) {
-				FileStream file = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read);
-				StreamReader reader = new StreamReader(file, Encoding.Default);
-				text.Rtf = reader.ReadToEnd();
-				reader.Close();
+				text.LoadFile(openFile.FileName);
 				path = openFile.FileName;
 				isNeedSave = false;
 			}
 		}
 
 		public static void Save(ref RichTextBox text, ref bool isNeedSave, ref string path) {
-			FileStream file = new FileStream(path, FileMode.Create, FileAccess.Write);
-			StreamWriter writer = new StreamWriter(file, Encoding.Default);
-			writer.Write(text.Rtf);
-			writer.Close();
+			text.SaveFile(path);
 			isNeedSave = false;
 		}
 
