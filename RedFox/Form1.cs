@@ -189,13 +189,13 @@ namespace RedFox {
 
 		#region Блок поиска и замены
 		private void StartSeacrh_Click(object sender, EventArgs e) {
-			caretPosition = text.SelectionStart + toSearch.TextLength;
+			caretPosition = text.SelectionStart == text.Text.Length ? 0 : text.SelectionStart + (isFromStart.Checked ? toSearch.Text.Length : 0);
 			TextLogic.Find(ref text, toSearch.Text, ref caretPosition, isCaseSensetive.Checked, isFromStart.Checked);
 		}
 		private void isFromStart_CheckedChanged(object sender, EventArgs e) => isFromStart.BackgroundImage = isFromStart.Checked ? Icons.direct_order : Icons.reverse_order;
 		private void isCaseSensetive_CheckedChanged(object sender, EventArgs e) => isCaseSensetive.BackgroundImage = isCaseSensetive.Checked ? Icons.case_sensetive_true : Icons.case_sensetive_false;
 		private void StartReplace_Click(object sender, EventArgs e) {
-			caretPosition = text.SelectionStart + toReplace.TextLength;
+			caretPosition = text.SelectionStart == text.Text.Length ? 0 : text.SelectionStart;
 			TextLogic.Replace(ref text, toSearch.Text, toReplace.Text, ref caretPosition, isCaseSensetive.Checked, isFromStart.Checked);
 		}
 		private void ReplaceAll_Click(object sender, EventArgs e) {

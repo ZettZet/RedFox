@@ -277,7 +277,7 @@
 			// шрифтToolStripMenuItem
 			// 
 			this.шрифтToolStripMenuItem.Name = "шрифтToolStripMenuItem";
-			this.шрифтToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.шрифтToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
 			this.шрифтToolStripMenuItem.Text = "Шрифт";
 			this.шрифтToolStripMenuItem.Click += new System.EventHandler(this.шрифтToolStripMenuItem_Click);
 			// 
@@ -700,6 +700,8 @@
 			this.isFromStart.BackColor = System.Drawing.SystemColors.ButtonHighlight;
 			this.isFromStart.BackgroundImage = global::RedFox.Icons.direct_order;
 			this.isFromStart.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.isFromStart.Checked = true;
+			this.isFromStart.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.isFromStart.FlatAppearance.BorderSize = 0;
 			this.isFromStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.isFromStart.Font = new System.Drawing.Font("Century Gothic", 9F);

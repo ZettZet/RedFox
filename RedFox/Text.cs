@@ -11,6 +11,15 @@ namespace RedFox {
 		public static string AfterCaret { get; set; } = "";
 
 		public static int Find(ref RichTextBox text, string toFind, ref int position, bool isCaseSensetive, bool isDirectOrder) {
+			if(text.Text.Length == 0 || text.Text.All(char.IsWhiteSpace)) {
+				MessageBox.Show("Не в чем искать замену", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -1;
+			}
+			if(toFind.Length == 0) {
+				MessageBox.Show("Не чего искать", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -2;
+			}
+
 			toFind = isCaseSensetive ? toFind : toFind.ToLower();
 			string localText = isCaseSensetive ? text.Text : text.Text.ToLower();
 
@@ -42,43 +51,69 @@ namespace RedFox {
 		}
 		
 		public static int Replace(ref RichTextBox text, string oldText, string newText, ref int position, bool isCaseSensetive, bool isDirectOrder) {
+			if(text.Text.Length == 0 || text.Text.All(char.IsWhiteSpace)) {
+				MessageBox.Show("Не в чем искать замену", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -1;
+			}
+			if(oldText.Length == 0) {
+				MessageBox.Show("Не чего искать для замены", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -2;
+			}
+			if(newText.Length == 0) {
+				MessageBox.Show("Не на что заменять", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -3;
+			}
+
 			oldText = isCaseSensetive ? oldText : oldText.ToLower();
-			string localText = isCaseSensetive ? text.Text : text.Text.ToLower();
+				string localText = isCaseSensetive ? text.Text : text.Text.ToLower();
 
-			if(localText.Contains(oldText)) {
-				if(text.SelectedText == "" || text.SelectedText != oldText) {
-					BeforeCaret = localText.Substring(0, position);
-					AfterCaret = localText.Substring(position + 1);
+				if(localText.Contains(oldText)) {
+					if(text.SelectedText == "" || text.SelectedText != oldText) {
+						BeforeCaret = localText.Substring(0, position);
+						AfterCaret = localText.Substring(position);
 
-					int resultPosition = isDirectOrder ? AfterCaret.IndexOf(oldText) : BeforeCaret.LastIndexOf(oldText);
+						int resultPosition = isDirectOrder ? AfterCaret.IndexOf(oldText) : BeforeCaret.LastIndexOf(oldText);
 
-					if(resultPosition != -1 && isDirectOrder)
-						resultPosition += BeforeCaret.Length;
+						if(resultPosition != -1 && isDirectOrder)
+							resultPosition += BeforeCaret.Length;
 
-					if(resultPosition != -1) {
-						text.Select(resultPosition, oldText.Length);
-						text.ScrollToCaret();
-						text.Focus();
-						position += oldText.Length + resultPosition;
+						if(resultPosition != -1) {
+							text.Select(resultPosition, oldText.Length);
+							text.ScrollToCaret();
+							text.Focus();
+							position += oldText.Length + resultPosition;
+						}
+						else if(resultPosition == -1 && position != 0) {
+							position = isDirectOrder ? 0 : text.Text.Length;
+							return Replace(ref text, oldText, newText, ref position, isCaseSensetive, isDirectOrder);
+						}
 					}
-					else if(resultPosition == -1 && position != 0) {
-						position = 0;
-						return Replace(ref text, oldText, newText, ref position, isCaseSensetive, isDirectOrder);
+					else if(text.SelectedText == oldText) {
+						text.SelectedText = newText;
 					}
 				}
-				else if(text.SelectedText == oldText) {
-					text.SelectedText = newText;
+				else {
+					position = isDirectOrder ? 0 : text.Text.Length;
+					MessageBox.Show("Совпадений не найдено", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
-			}
-			else {
-				position = isDirectOrder ? 0 : text.Text.Length;
-				MessageBox.Show("Совпадений не найдено", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
 
-			return 0;
+				return 0;
 		}
 
 		public static int ReplaceAll(ref RichTextBox text, string oldText, string newText, bool isCaseSensetive, bool isDirectOrder) {
+			if(text.Text.Length == 0 || text.Text.All(char.IsWhiteSpace)) {
+				MessageBox.Show("Не в чем искать замену", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -1;
+			}
+			if(oldText.Length == 0) {
+				MessageBox.Show("Не чего искать для замены", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -2;
+			}
+			if(newText.Length == 0) {
+				MessageBox.Show("Не на что заменять", "Не найдено", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return -3;
+			}
+
 			oldText = isCaseSensetive ? oldText : oldText.ToLower();
 			string localText = isCaseSensetive ? text.Text : text.Text.ToLower();
 
@@ -93,6 +128,7 @@ namespace RedFox {
 			}
 
 			return 0;
+
 		}
 	}
 }
